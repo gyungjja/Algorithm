@@ -1,0 +1,79 @@
+package week9;
+
+
+public class Dijkstra {
+	
+	private int weight[][];
+	private int numOfVertex;
+	private int dist[];
+	private boolean visit[];
+	
+	public Dijkstra(int w[][]){
+		/*
+		weight = new int[numOfVertex][numOfVertex];
+		for(int i = 0; i < numOfVertex; i++){
+			for(int j = 0; j < numOfVertex; j++){
+				if(i == j)
+					weight[i][j] = 0;
+				else
+					weight[i][j] = 999;
+			}
+		}
+		
+		numOfVertex = numOfVertex;
+		dist = dist;
+		visit[numOfVertex] = false;
+		*/
+		weight = new int[numOfVertex][numOfVertex];
+		dist = new int[numOfVertex];
+		this.numOfVertex = numOfVertex;
+		visit = new boolean[numOfVertex];
+	}
+	
+	public void shortestPath(int vertex){
+		for(int i = 0; i < numOfVertex; i++){
+			visit[i] = false;
+			dist[i] = weight[vertex][i];
+		}
+		visit[vertex] = true;
+		dist[vertex] = 0;
+		for(int i = 0; i < numOfVertex-2; i++){
+			int min = weight[vertex][i];
+			for(int j=0; j < numOfVertex; j++){
+				if(visit[j] == false && dist[j] < min){
+					visit[j] = true;
+				}
+			}
+			for(int w = 0; w<numOfVertex; w++){
+				if(visit[w] = false){
+					if(dist[w] > dist[numOfVertex]+weight[numOfVertex][w])
+						dist[w] = dist[numOfVertex]+weight[numOfVertex][w];
+				}
+				
+			}
+		}
+		
+		
+	}
+	
+	private void print(int step)
+	{
+		System.out.println("Step : " + (step + 1));
+		System.out.println("========================= Shortest Path========================");
+		System.out.printf("%9s",  "Vertex : ");
+		for(int i = 0; i < numOfVertex; i++)
+			System.out.printf("|%10d|",  i);
+		System.out.println();
+		
+		System.out.printf("%9s", "S : ");
+		for(int i = 0; i < numOfVertex; i++)
+			System.out.printf("|%10s|", visit[i] == true?"true":"false");
+		System.out.println();
+		
+		System.out.printf("%9s", "Dist : ");
+		for(int i = 0; i < numOfVertex; i++)
+			System.out.printf("|%10d|", dist[i]);
+		System.out.println("\n=============================================================\n");
+	}
+
+}

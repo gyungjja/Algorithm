@@ -1,0 +1,195 @@
+
+
+public class BSTree {
+	
+	private BSTNode root;
+	//탐색
+	public BSTNode search(int key){
+		BSTNode p = root;	//새로운 노드에 옮기고
+		while(p != null)
+		{
+			if(p.getKey() > key){	//노도의 데이터값이 키보다 크면
+				p = p.getLeft();	//왼쪽으로
+			}
+			else if(p.getKey() == key){	//노드의 데이턱값이 키값과 일치하면 
+				return p;	//종료
+			}
+			else
+				p = p.getRight();	//데이터값이 키보다 작으면 오른쪽으로
+		}
+		return p;	//반환
+		
+	}
+	//삽입
+	public void insert(int key){
+		BSTNode p = root;	//새로운 노드에 옮기고
+		BSTNode q = new BSTNode();	//부모노드
+		while(p != null){
+			if(key == p.getKey())	//키와 데이터값이 같으면
+				return;		//리턴
+			q = p;	//부모노드에 옮기고
+			if(key < p.getKey())	//키값이 데이터값보다 작으면
+				p = p.getLeft();	//왼쪽
+			else 
+				p = p.getRight();	//키값이 데이터값보다 크면 오른쪽
+			}
+		BSTNode newNode = new BSTNode();	//새로운 노드에 탐색한 노드값정보를 넣고
+		newNode.setKey(key);	//넣어줄꺼 생성
+		newNode.setRight(null);	//넣어줄꺼 생성
+		newNode.setLeft(null);	//넣어줄꺼 생성
+		
+		if(root == null)	//null이면
+			root = newNode;	
+		else if(key < q.getKey())	//키값이 부모노드보다 작으면
+			q.setLeft(newNode);		//왼쪽에
+		else	//키값이 부모노드보다 크면
+			q.setRight(newNode);	//오른쪽에
+		return;	//리턴
+		
+	}
+	//삭제
+	public void delete(int key)
+	{
+		deleteBST(this.root,key);
+	}
+	public void deleteBST(BSTNode root,int key)
+	{
+		BSTNode p = root;	//루트노드를 p에 대입
+		BSTNode q = p;		//부모노드 
+		
+		while(p != null)	//값을 찾기
+		{
+			if(key == p.getKey()) break;
+			q = p;
+			if(key < p.getKey()) p = p.getLeft();
+			else p = p.getRight();
+		}
+		
+		if(p == null) return;
+		
+		//리프노드 삭제
+		if((p.getLeft() == null) && (p.getRight() == null)) 
+		{
+			if(q.getLeft() == p)	//삭제하려는 값이 부모노드의 왼쪽값과 같으면
+				q.setLeft(null);	//부모노드의 왼쪽값을 비워주고
+			else					//아니면
+				q.setRight(null);	//부모노드의 오른쪽값을 비워준다.
+		}
+		//하나의 자식 == null
+		else if((p.getLeft() == null) || (p.getRight() == null)) 
+		{
+			if(p == root)	//삭제하려는 값이 같으면
+			{
+				root = null;	//비워준다.
+			}
+			//Left Child null
+			else if(p.getLeft() != null)	//왼쪽값이 비어있지 않으면
+			{
+				if(p == root)
+					root = p.getLeft();
+				else if(q.getLeft() == p)	//부모노드의 왼쪽값이 삭제하려는 값과 같으면
+					q.setLeft(p.getLeft());	//부모노드의 왼쪽을 삭제하려는 노드의 왼쪽값으로 설정
+				else						//아니면
+					q.setRight(p.getLeft());	//부모노드의 오른쪽을 삭제하려는 노드의 왼쪽 값으로 설정
+			}
+			
+			//right child null
+			else
+			{
+				if(p == root)
+					root = p.getRight();
+				else if(q.getLeft() == p)	//부모노드의 왼쪽값이 삭제하려는 값과 같으면
+					q.setLeft(p.getRight());	//부모노드의 왼쪽을 삭제하려는 노드의 오른쪽값으로 설정
+				else
+					q.setRight(p.getRight());	//부모노드의 오른쪽을 삭제하려는 노드의 오른쪽값으로 설정
+			}
+		}
+		//두개의 자식 right subtree minimum value
+		else 
+		{
+			q = minNode(p.getRight());	//부모노드에 삭제하려는 노드의 오른쪽값의 최소값 대입
+			p.setKey(q.getKey());	//삭제하려는 키값을 부모노드 키값으로 설정
+			if(p.getRight() == q)	//삭제하려는 값이 오른쪽값의 최소값과 같으면
+				p.setRight(q.getRight());	//최소값으로 설정
+			deleteBST(p.getRight(),p.getKey());	//오른쪽값과 키값을 삭제
+		}
+		return; //반환
+	}
+			
+	
+		
+	
+
+	private BSTNode minNode(BSTNode deleteBSTNode){	//최소값 찾기
+		BSTNode p =deleteBSTNode; //삭제할 값을 p에 넣어주고
+		if(p.getLeft() == null) return p;	//삭제할 원소의 왼쪽값이 비어있으면 반환
+		else return minNode(p.getLeft());	//아니면 왼쪽값의 최소값을 반환 재귀
+	}
+	
+	public boolean split(int key, BSTree bBST, BSTree cBST)
+	{
+		BSTNode small = new BSTNode();	//small 노드 생성
+		BSTNode large = new BSTNode();	//large 노드 생성
+		BSTNode p = this.treeCopy(this.root);	//복사 노드
+		BSTNode s = small;	//small 노드
+		BSTNode l = large;	//large 노드
+		while(p != null)	//비어있지 않을때 까지 
+		{
+			if(key == p.getKey())	//같은 값이 나오면
+			{
+				s.setRight(p.getLeft());	//왼쪽 작은값을 스몰오른쪽에 설정
+				l.setLeft(p.getRight());	//오른쪽 큰값을 라지왼쪽에 설정 
+				bBST.root = small.getRight();	//만들어진 트리에 넣어주기
+				cBST.root = large.getLeft();	//만들어진 트리에 넣어주기
+				return true;
+			}
+			else if(key < p.getKey()){	//찾는 값보다 더 크면
+				l.setLeft(p);	//라지 왼쪽에 찾는값 설정
+				l = p;	//p를 l에 대입
+				p = p.getLeft();	//왼쪽값 p대입
+			}
+			else{
+				s.setRight(p);	//스몰 오른쪽값을 찾는값으로 설정
+				s = p;	
+				p = p.getRight();
+			}
+		}
+		
+		bBST.root = small.getRight();
+		cBST.root = large.getLeft();
+		return false;
+	}
+	
+	private BSTNode treeCopy(BSTNode T)
+	{
+		BSTNode S, L, R;
+		if(T != null)	//비어있지 않으면
+		{
+			L = treeCopy(T.getLeft());	//왼쪽 복사
+			R = treeCopy(T.getRight());	//오른쪽복사
+			S = new BSTNode(T.getKey());	//새노드생성
+			S.setLeft(L);	//왼쪽설정
+			S.setRight(R);	//오른쪽 설정
+		}
+		else	//비어있으면
+			return null;	//반환
+		return S;	//반환
+	}
+	public void print() {	//프린트함수
+		printBST(root);
+		System.out.println();
+	}
+	
+	private void printBST(BSTNode root) {
+		if(root != null) {	//비어있지 않으면
+			System.out.print("<");
+			printBST(root.getLeft());	//왼쪽출력
+			System.out.print(root.getKey());	//키값출력
+			printBST(root.getRight());	//오른쪽출력
+			System.out.print(">");
+		}
+	}
+
+	
+	
+}

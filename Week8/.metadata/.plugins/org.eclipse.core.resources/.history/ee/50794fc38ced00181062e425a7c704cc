@@ -1,0 +1,79 @@
+package week8;
+
+
+public class WG {
+	private int numOfVertex;
+	private int[][] weight;
+	
+	public WG(int numOfVertex) {
+		this.numOfVertex = numOfVertex;
+		weight = new int[numOfVertex][numOfVertex];
+		for(int i = 0; i < numOfVertex; i++) {
+			for(int j =0; j < numOfVertex; j++) {
+				if(i == j) 
+					weight[i][j] = 0;
+				else
+					weight[i][j] = 999;
+			}
+		}
+	}
+	
+	//간선 삽입
+	public void insertEdge(int v, int w , int t) {
+		int temp = v; //v값을 받을 temp 변수 생성
+		weight[v][t] = w;
+		v = t;
+		weight[v][temp] = w;
+	}
+	
+	//prim algorithm
+	
+	public Edge[] prim_MST(int vertex) {
+		//최소비용 신장트리
+		/*
+		Edge prim[] = new Edge[vertex];
+		boolean check[];	//해당 정점을 방문을 하였는지 판별하는 변수
+		check = new boolean[vertex];
+		//vertex = 0; // 새로 선택된 노드의 번호
+		//check[vertex] = false;
+		for(int i = 1; i <vertex; i++) {
+			for(int j = 1; j < vertex; j++) {
+				check[i] = true;
+				weight[i][j] = 0;
+			}
+		}
+		
+		for(int i = 0; i < vertex - 1; i++) {
+			for(int j = 0; i < vertex - 1; j++) {
+				weight[i][j]=999;
+			}
+		}
+			
+			
+		
+		return prim;
+		*/
+		this.numOfVertex = vertex;
+		boolean check[] = new boolean[vertex];
+		weight = new int[vertex][vertex];
+		UnionFind u = new UnionFind(vertex);
+		int temp = 0; //새로 선택된 노드의 번호의 임시저장소
+		check[temp] = false;
+		for(int i = 0; i < vertex-1; i++) {
+			check[i] = true;
+		}
+	}
+	
+	
+	//배열 출력문
+	public void print() {
+		for(int i = 0; i < weight.length; i++) {
+			for(int j = 0; j < weight.length; j++) {
+				System.out.printf("|%3d|", weight[i][j]);
+			}
+			System.out.println();
+		}
+		
+	}
+
+}

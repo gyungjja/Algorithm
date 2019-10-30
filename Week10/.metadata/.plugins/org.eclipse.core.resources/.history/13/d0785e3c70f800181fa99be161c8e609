@@ -1,0 +1,67 @@
+package week10;
+
+import java.util.Queue;
+import java.util.LinkedList;
+
+public class AOVGraph {
+	private Queue<Integer>[] Q;	// 정점 i의 직속 후속자를 저장하는 큐
+	private Queue<Integer> zeroPredQ;	// 선행자가 없는 정점들을 저장하는 큐
+	private LinkedList<Integer> sortedList;	//위상 정렬 결과를 보관하는 리스트
+	private int[] indegree;	//정점 i 의 진입 차수
+	private int n;	//정점 수
+	
+	public AOVGraph(int numOfVertex){
+		n = numOfVertex;
+		Q = new Queue[n];	//큐 배열
+		zeroPredQ = new LinkedList<Integer>();
+		sortedList = new LinkedList<Integer>();
+		for(int i = 0; i < n; i++){
+			Q[i] = new LinkedList<Integer>();
+		}
+		indegree = new int[n];
+		
+	}
+	
+	public void topologicalSort(){
+		int i,v,successor;
+		for(i = 0; i <n; i++){
+			if(indegree[i]==0)	//선행자 없음
+				zeroPredQ.offer(i);
+		}
+		if(zeroPredQ.isEmpty()){
+			System.out.println("network has a cycle");
+			return;
+		}
+		while(!zeroPredQ.isEmpty()){
+			//indegree가 0인 정점들을 큐에서 하나씩 삭제해 처리
+			v = zeroPredQ.poll();
+			//indegree가 0인 정점들을 결과 리스트에 삽입
+			sortedList.offer(v);
+			if(Q[v].isEmpty()) continue;
+			//정점 v의 후속자가 없으면 밖의 while 루프로
+			else successor = Q[v].poll();
+			//후속자가 있으면, 그후속자를 successor로 설정
+			while(true){
+				indegree[successor]--;
+				if(indegree[successor]==0)
+					zeroPredQ.offer(successor);
+				if(!Q[v].isEmpty()) successor = Q[v].poll();
+				else break;
+			}
+		}
+		System.out.println("Topological Order is : ");
+		while(!sortedList.isEmpty())
+			System.out.print(sortedList.remove() +" ");
+		System.out.println();
+		System.out.println("End");
+		
+	}
+	
+	public void insertEdge(int i, int j){
+		Q[i].offer(j);
+		indegree[j]++;
+		
+		
+	}
+
+}

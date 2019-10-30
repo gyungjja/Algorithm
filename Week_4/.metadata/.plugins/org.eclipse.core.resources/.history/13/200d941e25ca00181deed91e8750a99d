@@ -1,0 +1,127 @@
+
+public class BSTree {
+	
+	private BSTNode root;
+	
+	public BSTNode search(int key){
+		BSTNode p = root;
+		while(p != null)
+		{
+			if(p.getKey() > key){
+				p = p.getLeft();
+			}
+			else if(p.getKey() == key){
+				return p;
+			}
+			else
+				p = p.getRight();
+		}
+		return p;
+		
+	}
+	public void insert(int key){
+		BSTNode p = root;
+		while(p != null){
+			if(key == p.getKey())
+				return;
+			BSTNode q = p;
+			if(key < p.getKey())
+				p = p.getLeft();
+			else 
+				p = p.getRight();
+			}
+		BSTNode newNode = p;	//새로운 노드에 탐색한 노드값정보를 넣고
+		
+		if(root == null)
+			root = newNode;
+		else if(key < p.getKey())
+			p.setLeft(newNode);
+		else
+			p.setRight(newNode);
+		return;
+		
+	}
+	/*
+	public void delete(int key){
+		
+	}
+	*/
+	private BSTNode minNode(BSTNode deleteBSTNode){
+		BSTNode min = null;
+		BSTNode minParent = null;
+		BSTNode q = deleteBSTNode.getRight();
+		while(q != null)
+		{
+			minParent = min;
+			min = q;
+			q = q.getLeft();
+		}
+		if(min != deleteBSTNode.getRight())
+		{
+			minParent.setLeft(min.getRight());
+			min.setRight(deleteBSTNode.getRight());
+		}
+		return min;
+	}
+	
+	public void print() {
+		printBST(root);
+		System.out.println();
+	}
+	
+	private void printBST(BSTNode root) {
+		if(root != null) {
+			System.out.print("<");
+			printBST(root.getLeft());
+			System.out.print(root.getKey());
+			printBST(root.getRight());
+			System.out.print(">");
+		}
+	}
+
+	public void delete(int key)
+	{
+		BSTNode parent = root;
+		BSTNode p = root;
+		boolean isLeftChild = false;
+		
+		while(p.getKey() != key)
+		{
+			parent = p;
+			if(p.getKey() > key)
+			{
+				isLeftChild = true;
+				p = p.getLeft();
+			}
+			else
+			{
+				isLeftChild = false;
+				p = p.getRight();
+			}
+			if(p == null)
+				return;
+		}
+		
+		if((p.getLeft() == null) && (p.getRight() == null))
+		{
+			
+		}
+		else if((p.getRight() == null) || (p.getLeft() == null))
+		{
+			if(p.getRight() == null)
+			{
+				
+			}
+			else if(p.getLeft() == null)
+			{
+				
+			}
+		}
+		
+		else if(p.getLeft() != null && p.getRight() != null)
+		{
+			
+		}
+		return;
+	}
+}

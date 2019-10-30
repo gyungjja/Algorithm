@@ -1,0 +1,81 @@
+package week7;
+
+
+public class WG {
+	private int numOfVertex;	//정점의 개수
+	private int numOfEdge;		//간선의 개수
+	private int[][] weight;		//간선의 가중치
+	
+	//생성자
+	public WG(int numOfVertex){
+		this.numOfVertex = numOfVertex;	//정점의 개수 인자값으로 받고
+		this.numOfEdge = 0;				// 간선 초기화
+		weight = new int[numOfVertex][numOfVertex];			//가중치 초기화
+		//자기 자신의 위치는 0 연결 되지 않는 간선의 가중치는 999로 지정
+		for(int i = 0; i<numOfVertex; i++){	//해당정점
+			for(int j = 0; j<numOfVertex; j++) {	//타겟정점
+				if(i == j)	//연결이 되있으면
+					weight[i][j] = 0;
+				else	//그렇지 않으면
+					weight[i][j] = 999;
+			}
+				
+		}
+			
+	}
+	
+	//간선 삽입
+	public void insertEdge(int v, int w, int t){
+		//해당정점과 target 정점의 위치의 값을 인자값으로 받은 가중치로 저장
+		/*
+		for(v = 0; v<numOfVertex; v++) {
+			for(t = 0; t < numOfVertex; t++) {
+				if(w)
+			}
+		}
+		*/
+		
+		if(weight[v][t] == 999)
+			numOfEdge++;
+		weight[v][t] = w;
+		/*
+		for(int i = 0; i<numOfVertex; i++) {
+			for(int j =0; j<numOfVertex; j++) {
+				if(i == j)
+					weight[v][t]=w;
+			}
+		}
+		*/
+		
+	}
+	
+	//Kruskal algorithm
+	//public Edge[] Kruskal_MST(){
+		
+	//}
+	
+	//Edge print
+	public void printEdge(){
+		for(int i = 0; i < numOfVertex; i++) {
+			for(int j = 0; j < numOfVertex; j++) {
+				if(weight[i][j] != 999 && weight[i][j] != 0) {
+					System.out.println("[" + i + "--" + weight[i][j] + "-->" + j + "]");
+				}
+			}
+			System.out.println();
+		}
+		
+	}
+	
+	//Graph print
+	public void print(){
+		for(int i = 0; i < weight.length; i++) {
+			for(int j =0; j < weight[i].length; j++) {
+					System.out.print("|" + weight[i][j] + "|" + " ");
+			}
+			System.out.println();
+		}
+		
+	}
+}
+
